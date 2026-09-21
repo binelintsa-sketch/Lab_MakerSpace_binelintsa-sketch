@@ -61,10 +61,9 @@ def create_tables():
     '''
     )
 
-
     conn.commit()
     conn.close()
     print("Tables created successfully.")
 
-    if __name__ == "__main__":
-        create_tables()
+if __name__ == "__main__":
+    create_tables()
