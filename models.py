@@ -3,13 +3,13 @@ from datetime import datetime, timedelta
 from database import get_connection
 
 class Member:
+    
     def __init__(self, name, email, phone="", member_id=None):
         self.member_id = member_id
         self.name = name
         self.email = email
         self.phone = phone
 
-    
     def save(self):
         """save the new membre to the database"""
         conn = get_connection()
@@ -33,7 +33,7 @@ class Member:
         return [
             Member(member_id=r[0], name=r[1], email=r[2], phone=r[3])
             for r in rows
-            ]
+        ]
 
 class Equipment:
     def __init__(self, equipment_id=None, name=None, category=None, is_available=1):
