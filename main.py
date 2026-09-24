@@ -13,7 +13,8 @@ def display_menu():
     print("4. List Available Equipment")
     print("5. Checkout Equipment")
     print("6. Return Equipment")
-    print("7. Exit")
+    print("7. Delete Member")
+    print("8. Exit")
     print("=" * 45)
 
 
@@ -111,6 +112,18 @@ def return_equipment_ui():
     else:
         print(f"Error: Loan ID {loan_id} not found or already returned.")
 
+def delete_member_ui():
+    print("\n--- Delete Member ---")
+    try:
+        member_id = int(input("Enter Member ID to delete: ").strip())
+        if Member.delete(member_id):
+            print(f"Member {member_id} and associated loans deleted successfully.")
+        else:
+            print(f"No member found with ID {member_id}.")
+    except ValueError:
+        print("Error: Please enter a valid numerical ID.")
+    except Exception as e:
+        print(f"Error deleting member: {e}")
 
 def main():
     # Ensure database tables exist before starting CLI
@@ -118,7 +131,7 @@ def main():
 
     while True:
         display_menu()
-        choice = input("Select an option (1-7): ").strip()
+        choice = input("Select an option (1-8): ").strip()
 
         if choice == "1":
             add_member_ui()
@@ -131,12 +144,14 @@ def main():
         elif choice == "5":
             checkout_equipment_ui()
         elif choice == "6":
-            return_equipment_ui()
+            return_equipment_ui()   
         elif choice == "7":
+            delete_member_ui()
+        elif choice == "8":
             print("\nThank you for using the MakerSpace Checkout System!")
             sys.exit(0)
         else:
-            print("Invalid selection. Please enter a number between 1 and 7.")
+            print("Invalid selection. Please enter a number between 1 and 8.")
 
 
 if __name__ == "__main__":
