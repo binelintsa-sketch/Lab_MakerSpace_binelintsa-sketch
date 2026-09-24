@@ -61,7 +61,7 @@ class Equipment:
         conn = get_connection()
         cursor = conn.cursor()
         cursor.execute(
-            "SELECT equipment_id, name, category, is_available FROM equipment WHERE is_available = 1"
+            "SELECT equipment_id, name, categorie, is_available FROM equipment WHERE is_available = 1"
         )
         rows = cursor.fetchall()
         conn.close()
