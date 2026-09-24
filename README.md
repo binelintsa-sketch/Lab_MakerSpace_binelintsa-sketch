@@ -57,9 +57,20 @@ The **Campus MakerSpace Checkout System** is a Python CLI application backed by 
 ### How to Run
 
 1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/binelintsa-sketch/Lab_MakerSpace_binelintsa-sketch.git](https://github.com/binelintsa-sketch/Lab_MakerSpace_binelintsa-sketch.git)
+   *git clone [https://github.com/binelintsa-sketch/Lab_MakerSpace_binelintsa-sketch.git](https://github.com/binelintsa-sketch/Lab_MakerSpace_binelintsa-sketch.git)
    cd Lab_MakerSpace_binelintsa-sketch
+2. Run the main script using Python:
+   python main.py
+  
+##AI Tools Used: Google Gemini.
+
+#Scope of Assistance:
+
+*Debugging Python runtime errors (parameter ordering in __init__).
+
+*Resolving SQLite schema conflicts (synchronizing category column across queries).
+
+*Explaining OOP-to-database interaction patterns (mapping raw SQL tuples to model instances).
 
    ## ✍️ Author
 
