@@ -34,6 +34,15 @@ class Member:
             Member(member_id=r[0], name=r[1], email=r[2], phone=r[3])
             for r in rows
             ]
+    @classmethod
+    def delete(cls, member_id):
+        with get_connection() as conn:
+            cursor = conn.cursor()
+            # Delete dependent loans first to avoid foreign key constraint errors
+            cursor.execute("DELETE FROM loans WHERE member_id = ?", (member_id,))
+            cursor.execute("DELETE FROM members WHERE member_id = ?", (member_id,))
+            conn.commit()
+            return cursor.rowcount > 0
 
 class Equipment:
     def __init__(self, equipment_id=None, name=None, category=None, is_available=1):
