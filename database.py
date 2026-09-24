@@ -30,7 +30,7 @@ def create_tables():
         CREATE TABLE IF NOT EXISTS equipment (
             equipment_id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
-            categorie TEXT NOT NULL,
+            category TEXT NOT NULL,
             is_available INTEGER NOT NULL DEFAULT 1 CHECK (is_available IN (0, 1))
         );
     '''

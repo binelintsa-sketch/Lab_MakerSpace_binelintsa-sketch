@@ -51,14 +51,14 @@ def list_members_ui():
 def add_equipment_ui():
     print("\n--- Add New Equipment ---")
     name = input("Enter Equipment Name: ").strip()
-    categorie = input("Enter Category: ").strip()
+    category = input("Enter Category: ").strip()
 
-    if not name or not categorie:
+    if not name or not category:
         print("Error: Name and Category are required.")
         return
 
     try:
-        item = Equipment(name=name, categorie=categorie)
+        item = Equipment(name=name, category=category)
         eq_id = item.save()
         print(f"Equipment created successfully with ID: {eq_id}")
     except Exception as e:
@@ -74,7 +74,7 @@ def list_available_equipment_ui():
 
     for item in items:
         print(
-            f"ID: {item.equipment_id} | Name: {item.name} | Category: {item.categorie}"
+            f"ID: {item.equipment_id} | Name: {item.name} | Category: {item.category}"
         )
 
 
