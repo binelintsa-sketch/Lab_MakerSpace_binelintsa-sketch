@@ -32,19 +32,6 @@ def list_members_ui():
 
 def add_equipment_ui():
     print("\n--- Add New Equipment ---")
-<<<<<<< HEAD
-    name = input("Enter Equipment Name: ").strip()
-    category = input("Enter Category: ").strip()
-
-    if not name or not category:
-        print("Error: Name and Category are required.")
-        return
-
-    try:
-        item = Equipment(name=name, category=category)
-        eq_id = item.save()
-        print(f"Equipment created successfully with ID: {eq_id}")
-=======
     title = input("Enter Equipment Title: ").strip()
     category = input("Enter Category: ").strip()
 
@@ -56,24 +43,11 @@ def add_equipment_ui():
         item = Equipment(title=title, category=category)
         item_id = item.save()
         print(f"Equipment added successfully with ID: {item_id}")
->>>>>>> main.py
     except Exception as e:
         print(f"Error saving equipment: {e}")
 
 def list_available_equipment_ui():
     print("\n--- Available Equipment ---")
-<<<<<<< HEAD
-    items = Equipment.get_available()
-    if not items:
-        print("No available equipment found.")
-        return
-
-    for item in items:
-        print(
-            f"ID: {item.equipment_id} | Name: {item.name} | Category: {item.category}"
-        )
-
-=======
     try:
         items = Equipment.get_available()
         if not items:
@@ -83,7 +57,6 @@ def list_available_equipment_ui():
             print(f"ID: {item.equipment_id} | Title: {item.title} | Category: {item.category}")
     except Exception as e:
         print(f"Error listing equipment: {e}")
->>>>>>> main.py
 
 def checkout_equipment_ui():
     print("\n--- Checkout Equipment ---")
