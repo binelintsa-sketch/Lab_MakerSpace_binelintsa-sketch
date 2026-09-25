@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from database import get_connection
 
 class Member:
-    def __init__(self, member_id=None, name=any, email, phone=""):
+    def __init__(self, name, email, phone="",  member_id=None):
         self.member_id = member_id
         self.name = name
         self.email = email

@@ -1,22 +1,5 @@
-import sys
-from database import create_tables
-from models import Equipment, Loan, Member
-
-
-def display_menu():
-    print("\n" + "=" * 45)
-    print("   CAMPUS MAKERSPACE CHECKOUT SYSTEM CLI   ")
-    print("=" * 45)
-    print("1. Add New Member")
-    print("2. List All Members")
-    print("3. Add New Equipment")
-    print("4. List Available Equipment")
-    print("5. Checkout Equipment")
-    print("6. Return Equipment")
-    print("7. Delete Member")
-    print("8. Exit")
-    print("=" * 45)
-
+from models import Member, Equipment, Loan
+from database import init_db
 
 def add_member_ui():
     print("\n--- Add New Member ---")
@@ -35,82 +18,72 @@ def add_member_ui():
     except Exception as e:
         print(f"Error saving member: {e}")
 
-
 def list_members_ui():
-    print("\n--- Registered Members ---")
-    members = Member.get_all()
-    if not members:
-        print("No members found in the system.")
-        return
-
-    for m in members:
-        print(
-            f"ID: {m.member_id} | Name: {m.name} | Email: {m.email} | Phone: {m.phone}"
-        )
-
+    print("\n--- List All Members ---")
+    try:
+        members = Member.get_all()
+        if not members:
+            print("No members found in database.")
+            return
+        for m in members:
+            print(f"ID: {m.member_id} | Name: {m.name} | Email: {m.email} | Phone: {m.phone or 'N/A'}")
+    except Exception as e:
+        print(f"Error retrieving members: {e}")
 
 def add_equipment_ui():
     print("\n--- Add New Equipment ---")
-    name = input("Enter Equipment Name: ").strip()
-    categorie = input("Enter Category: ").strip()
+    title = input("Enter Equipment Title: ").strip()
+    category = input("Enter Category: ").strip()
 
-    if not name or not categorie:
-        print("Error: Name and Category are required.")
+    if not title:
+        print("Error: Title is required.")
         return
 
     try:
-        item = Equipment(name=name, categorie=categorie)
-        eq_id = item.save()
-        print(f"Equipment created successfully with ID: {eq_id}")
+        item = Equipment(title=title, category=category)
+        item_id = item.save()
+        print(f"Equipment added successfully with ID: {item_id}")
     except Exception as e:
         print(f"Error saving equipment: {e}")
 
-
 def list_available_equipment_ui():
     print("\n--- Available Equipment ---")
-    items = Equipment.get_available()
-    if not items:
-        print("No available equipment found.")
-        return
-
-    for item in items:
-        print(
-            f"ID: {item.equipment_id} | Name: {item.name} | Category: {item.categorie}"
-        )
-
+    try:
+        items = Equipment.get_available()
+        if not items:
+            print("No equipment currently available.")
+            return
+        for item in items:
+            print(f"ID: {item.equipment_id} | Title: {item.title} | Category: {item.category}")
+    except Exception as e:
+        print(f"Error listing equipment: {e}")
 
 def checkout_equipment_ui():
     print("\n--- Checkout Equipment ---")
     try:
         member_id = int(input("Enter Member ID: ").strip())
         equipment_id = int(input("Enter Equipment ID: ").strip())
-    except ValueError:
-        print("Error: Member ID and Equipment ID must be integers.")
-        return
-
-    try:
+        
         loan = Loan(member_id=member_id, equipment_id=equipment_id)
-        loan_id = loan.checkout()
-        print(
-            f"Equipment checked out successfully! Loan ID: {loan_id} (Date: {loan.loan_date})"
-        )
+        loan_id = loan.create_loan()
+        print(f"Equipment {equipment_id} checked out successfully to Member {member_id}. Loan ID: {loan_id}")
+    except ValueError:
+        print("Error: Member ID and Equipment ID must be numbers.")
     except Exception as e:
-        print(f"Error during checkout: {e}")
-
+        print(f"Error checking out equipment: {e}")
 
 def return_equipment_ui():
     print("\n--- Return Equipment ---")
     try:
-        loan_id = int(input("Enter Loan ID to return: ").strip())
+        equipment_id = int(input("Enter Equipment ID to Return: ").strip())
+        if Loan.return_loan(equipment_id):
+            print(f"Equipment {equipment_id} returned successfully.")
+        else:
+            print(f"No active loan found for Equipment ID {equipment_id}.")
     except ValueError:
-        print("Error: Loan ID must be an integer.")
-        return
-
-    success = Loan.return_item(loan_id)
-    if success:
-        print(f"Loan ID {loan_id} returned successfully!")
-    else:
-        print(f"Error: Loan ID {loan_id} not found or already returned.")
+        print("Error: Equipment ID must be a number.")
+    except Exception as e:
+        print(f"Error returning equipment: {e}")
 
 def delete_member_ui():
     print("\n--- Delete Member ---")
@@ -126,11 +99,21 @@ def delete_member_ui():
         print(f"Error deleting member: {e}")
 
 def main():
-    # Ensure database tables exist before starting CLI
-    create_tables()
-
+    init_db()  # Ensures tables exist
     while True:
-        display_menu()
+        print("\n=============================================")
+        print("   CAMPUS MAKERSPACE CHECKOUT SYSTEM CLI")
+        print("=============================================")
+        print("1. Add New Member")
+        print("2. List All Members")
+        print("3. Add New Equipment")
+        print("4. List Available Equipment")
+        print("5. Checkout Equipment")
+        print("6. Return Equipment")
+        print("7. Delete Member")
+        print("8. Exit")
+        print("=============================================")
+        
         choice = input("Select an option (1-8): ").strip()
 
         if choice == "1":
@@ -144,15 +127,14 @@ def main():
         elif choice == "5":
             checkout_equipment_ui()
         elif choice == "6":
-            return_equipment_ui()   
+            return_equipment_ui()
         elif choice == "7":
             delete_member_ui()
         elif choice == "8":
             print("\nThank you for using the MakerSpace Checkout System!")
-            sys.exit(0)
+            break
         else:
-            print("Invalid selection. Please enter a number between 1 and 8.")
-
+            print("Invalid choice. Please enter a number between 1 and 8.")
 
 if __name__ == "__main__":
     main()
