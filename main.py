@@ -111,7 +111,6 @@ def return_equipment_ui():
     else:
         print(f"Error: Loan ID {loan_id} not found or already returned.")
 
-
 def main():
     # Ensure database tables exist before starting CLI
     create_tables()
